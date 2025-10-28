@@ -1,0 +1,125 @@
+dependency_paths: !!set {}
+directories: !!set
+  usr: null
+  usr/local: null
+  usr/local/bin: null
+  usr/local/include: null
+  usr/local/lib: null
+  usr/local/lib/cmake: null
+  usr/local/lib/cmake/eclipse-paho-mqtt-c: null
+  usr/local/share: null
+  usr/local/share/doc: null
+  usr/local/share/doc/Eclipse Paho C: null
+  usr/local/share/doc/Eclipse Paho C/samples: null
+  usr/share: null
+  usr/share/doc: null
+  usr/share/doc/paho-c: null
+files: !!set
+  usr/local/bin/MQTTVersion: null
+  usr/local/include/MQTTAsync.h: null
+  usr/local/include/MQTTClient.h: null
+  usr/local/include/MQTTClientPersistence.h: null
+  usr/local/include/MQTTExportDeclarations.h: null
+  usr/local/include/MQTTProperties.h: null
+  usr/local/include/MQTTReasonCodes.h: null
+  usr/local/include/MQTTSubscribeOpts.h: null
+  usr/local/lib/cmake/eclipse-paho-mqtt-c/eclipse-paho-mqtt-cConfig-noconfig.cmake: null
+  usr/local/lib/cmake/eclipse-paho-mqtt-c/eclipse-paho-mqtt-cConfig.cmake: null
+  usr/local/lib/cmake/eclipse-paho-mqtt-c/eclipse-paho-mqtt-cConfigVersion.cmake: null
+  usr/local/lib/libpaho-mqtt3a.a: null
+  usr/local/lib/libpaho-mqtt3a.so: null
+  usr/local/lib/libpaho-mqtt3a.so.1: null
+  usr/local/lib/libpaho-mqtt3a.so.1.3.8: null
+  usr/local/lib/libpaho-mqtt3as.a: null
+  usr/local/lib/libpaho-mqtt3as.so: null
+  usr/local/lib/libpaho-mqtt3as.so.1: null
+  usr/local/lib/libpaho-mqtt3as.so.1.3.8: null
+  usr/local/lib/libpaho-mqtt3c.a: null
+  usr/local/lib/libpaho-mqtt3c.so: null
+  usr/local/lib/libpaho-mqtt3c.so.1: null
+  usr/local/lib/libpaho-mqtt3c.so.1.3.8: null
+  usr/local/lib/libpaho-mqtt3cs.a: null
+  usr/local/lib/libpaho-mqtt3cs.so: null
+  usr/local/lib/libpaho-mqtt3cs.so.1: null
+  usr/local/lib/libpaho-mqtt3cs.so.1.3.8: null
+  usr/local/share/doc/Eclipse Paho C/CONTRIBUTING.md: null
+  usr/local/share/doc/Eclipse Paho C/README.md: null
+  usr/local/share/doc/Eclipse Paho C/edl-v10: null
+  usr/local/share/doc/Eclipse Paho C/epl-v20: null
+  usr/local/share/doc/Eclipse Paho C/notice.html: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTAsync_publish.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTAsync_publish_time.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTAsync_subscribe.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTClient_publish.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTClient_publish_async.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/MQTTClient_subscribe.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/paho_c_pub.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/paho_c_sub.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/paho_cs_pub.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/paho_cs_sub.c: null
+  usr/local/share/doc/Eclipse Paho C/samples/pubsub_opts.c: null
+  usr/share/doc/paho-c/LICENSE: null
+part_properties:
+  after: []
+  build-attributes: []
+  build-environment: []
+  build-packages:
+  - build-essential
+  - gcc
+  - g++
+  - git
+  - cmake
+  - libssl-dev
+  - doxygen
+  - graphviz
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: "# Build and install the library to $CRAFT_PART_INSTALL/usr/local/\n\
+    cmake -Bbuild -H. \\\n  -DCMAKE_INSTALL_PREFIX=$CRAFT_PART_INSTALL/usr/local \\\
+    \n  -DPAHO_ENABLE_TESTING=OFF \\\n  -DPAHO_BUILD_STATIC=ON \\\n  -DPAHO_WITH_SSL=ON\
+    \ \\\n  -DPAHO_HIGH_PERFORMANCE=ON\ncmake --build build/\ncmake --build build/\
+    \ --target install\n\n# Copy the license file\nmkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-c\n\
+    cp LICENSE $CRAFT_PART_INSTALL/usr/share/doc/paho-c/\n"
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: https://github.com/eclipse/paho.mqtt.c.git
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 1
+  source-subdir: ''
+  source-submodules: null
+  source-tag: v1.3.8
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: default
+partitions_contents: {}
+primed_stage_packages: !!set {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

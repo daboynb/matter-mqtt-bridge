@@ -1,0 +1,70 @@
+assets:
+  source-details:
+    source: https://github.com/eclipse/paho.mqtt.cpp.git
+    source-branch: ''
+    source-commit: ''
+    source-tag: v1.2.0
+  stage-packages: null
+  stage-snaps: null
+directories: !!set {}
+files: !!set {}
+outdated_dirs: null
+outdated_files: null
+part_properties:
+  after:
+  - paho-c
+  build-attributes: []
+  build-environment: []
+  build-packages: []
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: "mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/\n\n# Build\
+    \ and install the library to the default path /usr/local/\ncmake -Bbuild -H. \\\
+    \n    -DPAHO_BUILD_DOCUMENTATION=ON \\\n    -DPAHO_BUILD_STATIC=ON\ncmake --build\
+    \ build/ --target install\n\n# Create links and cache to shared libraries\nldconfig\n\
+    \n# Copy MQTT libraries to $CRAFT_PART_INSTALL\nmkdir -p $CRAFT_PART_INSTALL/usr/local/\n\
+    cp -vr /usr/local/* $CRAFT_PART_INSTALL/usr/local/\n\n# Copy the license file\n\
+    mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-c\ncurl -o LICENSE https://www.eclipse.org/legal/epl-v10.html\n\
+    cp LICENSE $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/\n"
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: https://github.com/eclipse/paho.mqtt.cpp.git
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 1
+  source-subdir: ''
+  source-submodules: null
+  source-tag: v1.2.0
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: null
+partitions_contents: {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

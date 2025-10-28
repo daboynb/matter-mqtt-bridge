@@ -1,0 +1,35 @@
+name: matter-mqtt-bridge
+version: 1.0.0-alpha
+summary: Matter MQTT Bridge
+description: Refer to https://github.com/canonical/matter-mqtt-bridge
+license: Apache-2.0 AND EPL-1.0
+architectures:
+- amd64
+base: core22
+apps:
+  bridge:
+    command: bin/run.sh
+    restart-delay: 10s
+    daemon: simple
+    install-mode: disable
+    plugs:
+    - network
+    - network-bind
+    - bluez
+    - avahi-control
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib
+  help:
+    command: bin/chip-bridge-app -h
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib
+confinement: strict
+grade: devel
+environment:
+  LD_LIBRARY_PATH: ${SNAP_LIBRARY_PATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+  PATH: $SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH
+layout:
+  /usr/local:
+    bind: $SNAP/usr/local
+  /mnt:
+    bind: $SNAP_COMMON/mnt

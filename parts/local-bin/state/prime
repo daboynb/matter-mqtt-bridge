@@ -1,0 +1,60 @@
+dependency_paths: !!set {}
+directories: !!set
+  bin: null
+files: !!set
+  bin/run.sh: null
+part_properties:
+  after: []
+  build-attributes: []
+  build-environment: []
+  build-packages: []
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: 'mkdir -p $CRAFT_PART_INSTALL/bin
+
+    cp -v run.sh $CRAFT_PART_INSTALL/bin/
+
+    '
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: snap/local/bin/
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 0
+  source-subdir: ''
+  source-submodules: null
+  source-tag: ''
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: default
+partitions_contents: {}
+primed_stage_packages: !!set {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

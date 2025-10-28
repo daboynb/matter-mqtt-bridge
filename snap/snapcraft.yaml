@@ -34,16 +34,15 @@ parts:
     source-depth: 1
     source-tag: v1.3.8
     override-build: |
-      # Build and install the library to the default path /usr/local/
+      # Build and install the library to $CRAFT_PART_INSTALL/usr/local/
       cmake -Bbuild -H. \
+        -DCMAKE_INSTALL_PREFIX=$CRAFT_PART_INSTALL/usr/local \
         -DPAHO_ENABLE_TESTING=OFF \
         -DPAHO_BUILD_STATIC=ON \
         -DPAHO_WITH_SSL=ON \
         -DPAHO_HIGH_PERFORMANCE=ON
+      cmake --build build/
       cmake --build build/ --target install
-
-      # Create links and cache to shared libraries
-      ldconfig
 
       # Copy the license file
       mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-c
@@ -68,21 +67,18 @@ parts:
     override-build: |
       mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/
 
-      # Build and install the library to the default path /usr/local/
+      # Build and install the library to $CRAFT_PART_INSTALL/usr/local/
+      # Set CMAKE_PREFIX_PATH so it can find paho-c from the previous part
       cmake -Bbuild -H. \
-          -DPAHO_BUILD_DOCUMENTATION=ON \
+          -DCMAKE_INSTALL_PREFIX=$CRAFT_PART_INSTALL/usr/local \
+          -DCMAKE_PREFIX_PATH=$CRAFT_STAGE/usr/local \
+          -DPAHO_BUILD_DOCUMENTATION=OFF \
           -DPAHO_BUILD_STATIC=ON
+      cmake --build build/
       cmake --build build/ --target install
 
-      # Create links and cache to shared libraries
-      ldconfig
-
-      # Copy MQTT libraries to $CRAFT_PART_INSTALL
-      mkdir -p $CRAFT_PART_INSTALL/usr/local/
-      cp -vr /usr/local/* $CRAFT_PART_INSTALL/usr/local/
-
       # Copy the license file
-      mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-c
+      mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp
       curl -o LICENSE https://www.eclipse.org/legal/epl-v10.html
       cp LICENSE $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/
 
@@ -132,17 +128,28 @@ parts:
       # Skip all non-core Python requirements:
       sed -i '/^-r requirements/ s/./#&/' ./scripts/setup/requirements.txt
 
+      # Skip pigweed environment check that fails due to Python dependency incompatibility
+      export PW_ACTIVATE_SKIP_CHECKS=1
+
       source scripts/activate.sh
+
       set -u
 
       # Copy and replace the linux bridge app
       cp -vr $CRAFT_PART_BUILD/bridge-app/linux/* ./examples/bridge-app/linux/
 
-      # Enable exceptions handling 
+      # Enable exceptions handling
       sed -i 's/configs = \[ ":no_exceptions" \]/configs = \[ ":exceptions" \]/' build/config/compiler/BUILD.gn
 
-      # Build bridge app
+      # Add paho MQTT library paths to BUILD.gn
       cd ./examples/bridge-app/linux/
+      # Update include_dirs to add paho-mqtt headers from staged snap parts
+      sed -i 's|include_dirs = \[ "include" \]|include_dirs = [\n    "include",\n    "'"$CRAFT_STAGE"'/usr/local/include",\n  ]|' BUILD.gn
+      # Update ldflags to point to staged libraries and add rpath-link
+      sed -i 's|"-L/usr/local/lib",|"-L'"$CRAFT_STAGE"'/usr/local/lib",\n    "-Wl,-rpath-link,'"$CRAFT_STAGE"'/usr/local/lib",\n    "-Wl,-rpath,\\$ORIGIN/../usr/local/lib",|' BUILD.gn
+      # Add the SSL variant library that's needed by paho-mqttpp3
+      sed -i 's|"paho-mqtt3a",|"paho-mqtt3a",\n    "paho-mqtt3as",|' BUILD.gn
+
       gn gen out/build
       ninja -C out/build -t clean
       ninja -C out/build

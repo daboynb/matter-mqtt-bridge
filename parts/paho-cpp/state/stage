@@ -1,0 +1,108 @@
+backstage_directories: !!set {}
+backstage_files: !!set {}
+directories: !!set
+  usr: null
+  usr/local: null
+  usr/local/include: null
+  usr/local/include/mqtt: null
+  usr/local/lib: null
+  usr/local/lib/cmake: null
+  usr/local/lib/cmake/PahoMqttCpp: null
+  usr/share: null
+  usr/share/doc: null
+  usr/share/doc/paho-cpp: null
+files: !!set
+  usr/local/include/mqtt/async_client.h: null
+  usr/local/include/mqtt/buffer_ref.h: null
+  usr/local/include/mqtt/buffer_view.h: null
+  usr/local/include/mqtt/callback.h: null
+  usr/local/include/mqtt/client.h: null
+  usr/local/include/mqtt/connect_options.h: null
+  usr/local/include/mqtt/create_options.h: null
+  usr/local/include/mqtt/delivery_token.h: null
+  usr/local/include/mqtt/disconnect_options.h: null
+  usr/local/include/mqtt/exception.h: null
+  usr/local/include/mqtt/iaction_listener.h: null
+  usr/local/include/mqtt/iasync_client.h: null
+  usr/local/include/mqtt/iclient_persistence.h: null
+  usr/local/include/mqtt/message.h: null
+  usr/local/include/mqtt/properties.h: null
+  usr/local/include/mqtt/response_options.h: null
+  usr/local/include/mqtt/server_response.h: null
+  usr/local/include/mqtt/ssl_options.h: null
+  usr/local/include/mqtt/string_collection.h: null
+  usr/local/include/mqtt/subscribe_options.h: null
+  usr/local/include/mqtt/thread_queue.h: null
+  usr/local/include/mqtt/token.h: null
+  usr/local/include/mqtt/topic.h: null
+  usr/local/include/mqtt/types.h: null
+  usr/local/include/mqtt/will_options.h: null
+  usr/local/lib/cmake/PahoMqttCpp/FindPahoMqttC.cmake: null
+  usr/local/lib/cmake/PahoMqttCpp/PahoMqttCppConfig.cmake: null
+  usr/local/lib/cmake/PahoMqttCpp/PahoMqttCppConfigVersion.cmake: null
+  usr/local/lib/cmake/PahoMqttCpp/PahoMqttCppTargets-noconfig.cmake: null
+  usr/local/lib/cmake/PahoMqttCpp/PahoMqttCppTargets.cmake: null
+  usr/local/lib/libpaho-mqttpp3.a: null
+  usr/local/lib/libpaho-mqttpp3.so: null
+  usr/local/lib/libpaho-mqttpp3.so.1: null
+  usr/local/lib/libpaho-mqttpp3.so.1.2.0: null
+  usr/share/doc/paho-cpp/LICENSE: null
+overlay_hash: 3f2fe19ee204aaae08f94acb1a72f19f81d1762d
+part_properties:
+  after:
+  - paho-c
+  build-attributes: []
+  build-environment: []
+  build-packages: []
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: "mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/\n\n# Build\
+    \ and install the library to $CRAFT_PART_INSTALL/usr/local/\n# Set CMAKE_PREFIX_PATH\
+    \ so it can find paho-c from the previous part\ncmake -Bbuild -H. \\\n    -DCMAKE_INSTALL_PREFIX=$CRAFT_PART_INSTALL/usr/local\
+    \ \\\n    -DCMAKE_PREFIX_PATH=/home/taki/Downloads/test_dir/matter-mqtt-bridge/stage/usr/local\
+    \ \\\n    -DPAHO_BUILD_DOCUMENTATION=OFF \\\n    -DPAHO_BUILD_STATIC=ON\ncmake\
+    \ --build build/\ncmake --build build/ --target install\n\n# Copy the license\
+    \ file\nmkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp\ncurl -o LICENSE https://www.eclipse.org/legal/epl-v10.html\n\
+    cp LICENSE $CRAFT_PART_INSTALL/usr/share/doc/paho-cpp/\n"
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: https://github.com/eclipse/paho.mqtt.cpp.git
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 1
+  source-subdir: ''
+  source-submodules: null
+  source-tag: v1.2.0
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: default
+partitions_contents: {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

@@ -1,0 +1,75 @@
+assets:
+  source-details:
+    source: https://github.com/eclipse/paho.mqtt.c.git
+    source-branch: ''
+    source-commit: ''
+    source-tag: v1.3.8
+  stage-packages: null
+  stage-snaps: null
+directories: !!set {}
+files: !!set {}
+outdated_dirs: null
+outdated_files: null
+part_properties:
+  after: []
+  build-attributes: []
+  build-environment: []
+  build-packages:
+  - build-essential
+  - gcc
+  - g++
+  - git
+  - cmake
+  - libssl-dev
+  - doxygen
+  - graphviz
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: "# Build and install the library to the default path /usr/local/\n\
+    cmake -Bbuild -H. \\\n  -DPAHO_ENABLE_TESTING=OFF \\\n  -DPAHO_BUILD_STATIC=ON\
+    \ \\\n  -DPAHO_WITH_SSL=ON \\\n  -DPAHO_HIGH_PERFORMANCE=ON\ncmake --build build/\
+    \ --target install\n\n# Create links and cache to shared libraries\nldconfig\n\
+    \n# Copy the license file\nmkdir -p $CRAFT_PART_INSTALL/usr/share/doc/paho-c\n\
+    cp LICENSE $CRAFT_PART_INSTALL/usr/share/doc/paho-c/\n"
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: https://github.com/eclipse/paho.mqtt.c.git
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 1
+  source-subdir: ''
+  source-submodules: null
+  source-tag: v1.3.8
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: null
+partitions_contents: {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

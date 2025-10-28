@@ -1,0 +1,69 @@
+assets:
+  source-details:
+    source: https://github.com/project-chip/connectedhomeip.git
+    source-branch: ''
+    source-commit: ''
+    source-tag: v1.1.0.1
+  stage-packages: null
+  stage-snaps: null
+directories: !!set {}
+files: !!set {}
+outdated_dirs: null
+outdated_files: null
+part_properties:
+  after: []
+  build-attributes: []
+  build-environment: []
+  build-packages: []
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: null
+  override-prime: null
+  override-pull: 'craftctl default
+
+
+    # shallow clone the submodules
+
+    scripts/checkout_submodules.py --shallow --platform linux
+
+    '
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: https://github.com/project-chip/connectedhomeip.git
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 1
+  source-subdir: ''
+  source-submodules: []
+  source-tag: v1.1.0.1
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: null
+partitions_contents: {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64

@@ -1,0 +1,102 @@
+dependency_paths: !!set {}
+directories: !!set
+  bin: null
+files: !!set
+  bin/chip-bridge-app: null
+part_properties:
+  after:
+  - paho-c
+  - paho-cpp
+  - connectedhomeip
+  build-attributes: []
+  build-environment: []
+  build-packages:
+  - pkg-config
+  - libdbus-1-dev
+  - libglib2.0-dev
+  - libavahi-client-dev
+  - ninja-build
+  - python3-venv
+  - python3-dev
+  - python3-pip
+  - unzip
+  - libgirepository1.0-dev
+  - libcairo2-dev
+  - libreadline-dev
+  - generate-ninja
+  build-snaps: []
+  disable-parallel: false
+  organize: {}
+  overlay:
+  - '*'
+  overlay-packages: []
+  overlay-script: null
+  override-build: "\n# Change to SDK's directory to allow caching of the activation\n\
+    # regardless of this part's pull and build status.\ncd ../../connectedhomeip/src\n\
+    \n# The project writes its data to /tmp which isn't persisted.\n#\n# There is\
+    \ currently has no known way of overriding the default paths to\n#   both storage\
+    \ and security config files.\n#\n# Snap does not allow bind-mounting a persistent\
+    \ directory on /tmp, \n#  so we need to first replace it in the source with another\
+    \ path, i.e. /mnt.\n# See the top-level layout definition which bind-mounts a\
+    \ persisted\n#   directory within the confined snap space on /mnt.\n#\n# Replace\
+    \ storage paths:\nsed -i 's/\\/tmp/\\/mnt/g' src/platform/Linux/CHIPLinuxStorage.h\n\
+    # Replace key-value store path:\nsed -i 's/\\/tmp/\\/mnt/g' src/platform/Linux/CHIPPlatformConfig.h\n\
+    \ncd $CRAFT_PART_BUILD\ncd ../../connectedhomeip/src\n\n# To avoid unrelated activation\
+    \ errors, don't treat unset variables as error\nset +u\n\n# Skip all non-core\
+    \ Python requirements:\nsed -i '/^-r requirements/ s/./#&/' ./scripts/setup/requirements.txt\n\
+    \n# Skip pigweed environment check that fails due to Python dependency incompatibility\n\
+    export PW_ACTIVATE_SKIP_CHECKS=1\n\nsource scripts/activate.sh\n\nset -u\n\n#\
+    \ Copy and replace the linux bridge app\ncp -vr $CRAFT_PART_BUILD/bridge-app/linux/*\
+    \ ./examples/bridge-app/linux/\n\n# Enable exceptions handling\nsed -i 's/configs\
+    \ = \\[ \":no_exceptions\" \\]/configs = \\[ \":exceptions\" \\]/' build/config/compiler/BUILD.gn\n\
+    \n# Add paho MQTT library paths to BUILD.gn\ncd ./examples/bridge-app/linux/\n\
+    # Update include_dirs to add paho-mqtt headers from staged snap parts\nsed -i\
+    \ 's|include_dirs = \\[ \"include\" \\]|include_dirs = [\\n    \"include\",\\\
+    n    \"'\"/home/taki/Downloads/test_dir/matter-mqtt-bridge/stage\"'/usr/local/include\"\
+    ,\\n  ]|' BUILD.gn\n# Update ldflags to point to staged libraries and add rpath-link\n\
+    sed -i 's|\"-L/usr/local/lib\",|\"-L'\"/home/taki/Downloads/test_dir/matter-mqtt-bridge/stage\"\
+    '/usr/local/lib\",\\n    \"-Wl,-rpath-link,'\"/home/taki/Downloads/test_dir/matter-mqtt-bridge/stage\"\
+    '/usr/local/lib\",\\n    \"-Wl,-rpath,\\\\$ORIGIN/../usr/local/lib\",|' BUILD.gn\n\
+    # Add the SSL variant library that's needed by paho-mqttpp3\nsed -i 's|\"paho-mqtt3a\"\
+    ,|\"paho-mqtt3a\",\\n    \"paho-mqtt3as\",|' BUILD.gn\n\ngn gen out/build\nninja\
+    \ -C out/build -t clean\nninja -C out/build\n\n# Check dynamic library dependencies\n\
+    ldd out/build/chip-bridge-app\n\n# Copy built app to $CRAFT_PART_INSTALL\nmkdir\
+    \ -p $CRAFT_PART_INSTALL/bin\ncp -v out/build/chip-bridge-app $CRAFT_PART_INSTALL/bin/\n"
+  override-prime: null
+  override-pull: null
+  override-stage: null
+  permissions: []
+  plugin: nil
+  prime:
+  - '*'
+  source: app
+  source-branch: ''
+  source-channel: null
+  source-checksum: ''
+  source-commit: ''
+  source-depth: 0
+  source-subdir: ''
+  source-submodules: null
+  source-tag: ''
+  source-type: ''
+  stage:
+  - '*'
+  stage-packages: []
+  stage-snaps: []
+partition: default
+partitions_contents: {}
+primed_stage_packages: !!set {}
+project_options:
+  application_name: snapcraft
+  arch_triplet: x86_64-linux-gnu
+  project_vars:
+    grade:
+      part_name: null
+      updated: false
+      value: devel
+    version:
+      part_name: null
+      updated: false
+      value: 1.0.0-alpha
+  project_vars_part_name: null
+  target_arch: amd64
