@@ -12,8 +12,10 @@ confinement: strict
 
 base: core22
 architectures:
-  - build-on: arm64
-  - build-on: amd64
+  - build-on: [amd64]
+    build-for: [amd64]
+  - build-on: [amd64]
+    build-for: [arm64]
 
 layout:
   /usr/local:

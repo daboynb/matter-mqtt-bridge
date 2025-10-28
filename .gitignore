@@ -1,2 +1,4 @@
-*.snap
 squashfs-root*
+parts/
+stage/
+prime/

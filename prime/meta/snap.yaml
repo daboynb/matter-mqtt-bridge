@@ -4,7 +4,7 @@ summary: Matter MQTT Bridge
 description: Refer to https://github.com/canonical/matter-mqtt-bridge
 license: Apache-2.0 AND EPL-1.0
 architectures:
-- amd64
+- arm64
 base: core22
 apps:
   bridge:
